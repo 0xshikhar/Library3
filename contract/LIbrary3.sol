@@ -26,13 +26,32 @@ contract Library3 {
     }
 
     // to get all the books finished by particular user
-    function userBook(bool finishStatus) public view {
-        Book memory tempBookList = new Book[booklist.length]
+    function getuserBook(bool finishStatus) private view returns (Book[] memory){
+        Book[] memory tempBookList = new Book[](booklist.length);
+        uint counter =0;
 
         for(uint i=0; i<booklist.length;i++){
-            if(bookToOwner[i] == msg.sender){
-                tempBookList[i] = booklist.id;
+            if(bookToOwner[i] == msg.sender && booklist[i].finished == finished){
+                tempBookList[counter] = booklist.[i];
+                counter++;
             }
         }
+
+        // we get large list with empty indexes => so we are redefining it
+        Book[] memory readlist = new Book[](counter);
+        for(uint i=0;i<counter;i++){
+            readlist[i]=tempBookList[i];
+            
+        }
+        return readlist;
     }
+
+    function getFinishedBook() external view returns (Book[] memory){
+        return getuserBook(true);
+    }
+
+    function getUnfinishedBook() external view returns (Book[] memory){
+        return getuserBook(false);
+    }
+    
 }
