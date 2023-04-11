@@ -1,4 +1,4 @@
-//SPDX-Liscense-Identifier: MIT
+//SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 contract Library3 {
@@ -16,13 +16,14 @@ contract Library3 {
     mapping(uint256 => address) bookToOwner;
 
     event AddBook(address recipient, uint id, string name);
+    event SetFinished(uint bookid, bool status);
 
-    function addBook(string memory name, uint16 year, string memory author, string memory url, bool finished){
+    function addBook(string memory name, uint16 year, string memory author, string memory url, bool finished) public {
         uint bookId= booklist.length;
         booklist.push(Book(bookId,name,author,year,url,finished));
         bookToOwner[bookId]=msg.sender;
 
-        emit(msg.sender, bookId, name);
+        emit AddBook(msg.sender, bookId, name);
     }
 
     // to get all the books finished by particular user
@@ -31,8 +32,8 @@ contract Library3 {
         uint counter =0;
 
         for(uint i=0; i<booklist.length;i++){
-            if(bookToOwner[i] == msg.sender && booklist[i].finished == finished){
-                tempBookList[counter] = booklist.[i];
+            if(bookToOwner[i] == msg.sender && booklist[i].finished == finishStatus){
+                tempBookList[counter] = booklist[i];
                 counter++;
             }
         }
@@ -54,4 +55,12 @@ contract Library3 {
         return getuserBook(false);
     }
     
+    // to change status of book read
+    function setFinished(uint bookId, bool finished ) external {
+        if(bookToOwner[bookId] == msg.sender){
+            booklist[bookId].finished = finished;
+            emit SetFinished(bookId, finished);
+        }
+    }
+
 }
