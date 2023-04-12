@@ -23,7 +23,7 @@ contract Library3 {
         booklist.push(Book(bookId,name,author,year,url,finished));
         bookToOwner[bookId]=msg.sender;
 
-        emit AddBook(msg.sender, bookId, name);
+        // emit AddBook(msg.sender, bookId, name);
     }
 
     // to get all the books finished by particular user
