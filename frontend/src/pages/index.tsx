@@ -73,6 +73,30 @@ export default function Home() {
     }
   }
 
+  const getBooks = async () => {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const LibraryContract = new ethers.Contract(ContractAddress, Library3.abi, signer);
+
+        let booksFinished = await LibraryContract.getFinishedBook();
+        let booksUnfinished = await LibraryContract.getUnfinishedBook();
+
+        console.log("Finished:", booksFinished)
+        console.log("Unfinished:", booksUnfinished)
+
+        setBooksFinished(booksFinished)
+        setBooksUnfinished(booksUnfinished)
+      }
+
+    }
+    catch (error) {
+      console.log("Error occured in calling getBooks function");
+    }
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <h1 className='bold '>Library 3</h1>
