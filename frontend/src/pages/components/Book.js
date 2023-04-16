@@ -13,12 +13,12 @@ const Book = ({ id, name, author, year, url, finished, clickBookFinished }) => {
                 <span>
                     {
                         finished === 'false' ? (
-                            <button className='px-10 py-2 font-bold text-blue-700 '>
-
+                            <button className='px-10 py-2 font-bold bg-white text-blue-700' onClick={() => clickBookFinished(id)}>
+                                Finish Book
                             </button>
                         ) :
                             (
-                                <p>Book Finished</p>
+                                <p className="p-2 text-black font-bold">Book Finished</p>
                             )
                     }
                 </span>

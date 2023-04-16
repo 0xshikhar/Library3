@@ -97,6 +97,24 @@ export default function Home() {
     }
   }
 
+  const clickBookFinished = async (id) => {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const LibraryContract = new ethers.Contract(ContractAddress, Library3.abi, signer);
+
+        let libraryTx = await LibraryContract.setFinished(id, true)
+        console.log("Changing Book Status", libraryTx)
+      }
+      else { console.log("Ethereum object do not exists") }
+    }
+    catch (error) {
+      console.log("Error changing book status")
+    }
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <h1 className='bold '>Library 3</h1>
@@ -149,7 +167,7 @@ export default function Home() {
                       author={book.author} url={book.url}
                       year={parseInt(book.year).toString()}
                       finished={book.finished.toString()}
-                      clickBookFinished={null}
+                      clickBookFinished={clickBookFinished}
                     />
 
                   ))}
@@ -161,7 +179,7 @@ export default function Home() {
                       author={book.author} url={book.url}
                       year={parseInt(book.year).toString()}
                       finished={book.finished.toString()}
-                      clickBookFinished={null}
+                      clickBookFinished={clickBookFinished}
                     />
 
                   ))}
