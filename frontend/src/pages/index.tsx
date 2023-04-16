@@ -1,7 +1,7 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
 
 import { useState, useEffect } from 'react';
+import Book from './components/Book'
+
 import { ethers } from 'ethers';
 import { ContractAddress } from '../../config';
 import Library3 from '../../artifacts/contracts/Library3.sol/Library3.json';
@@ -99,8 +99,53 @@ export default function Home() {
                 </label>
 
                 <button className=' m-2 px-10 py-2 bg-white font-bold rounded' onClick={submit}>Add Book</button>
+
+              </div>
+
+              <div>
+                <div className='text-xl font-bold'> Books List</div>
+                <button className='text-lg font-bold' onClick={getBooks}> Get Books</button>
+                {
+                  booksUnfinished.length > 0 ? (
+                    <div> Books Unfinished {(booksUnfinished.length)}
+                    </div>
+                  ) : (<div></div>)
+                }
+                {
+                  booksFinished.length > 0 ? (
+                    <div> Books Finished {(booksFinished.length)}
+                    </div>
+                  ) : (<div></div>)
+                }
+
+                <div>
+                  {booksUnfinished.map((book) => (
+                    <Book
+                      key={book.id} id={parseInt(book.id)} name={book.name}
+                      author={book.author} url={book.url}
+                      year={parseInt(book.year).toString()}
+                      finished={book.finished.toString()}
+                      clickBookFinished={null}
+                    />
+
+                  ))}
+
+
+                  {booksFinished.map((book) => (
+                    <Book
+                      key={book.id} id={parseInt(book.id)} name={book.name}
+                      author={book.author} url={book.url}
+                      year={parseInt(book.year).toString()}
+                      finished={book.finished.toString()}
+                      clickBookFinished={null}
+                    />
+
+                  ))}
+                </div>
               </div>
             </div>
+
+
           )
       }
 
